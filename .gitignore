@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# PyInstaller / 封包建置產物
+build/
+dist/
+*.exe
+
+# 編輯器
+.vscode/
+.idea/
+
+# 憑證（避免不小心上傳 Google service account 等金鑰）
+*credentials*.json
+service_account*.json
+
+# 生成的報表（不上傳，但保留資料夾結構）
+匯出結果/*
+!匯出結果/.gitkeep

@@ -1,0 +1,53 @@
+name: Build Windows Installer
+
+on:
+  push:
+    tags:
+      - 'v*'          # 推 tag（如 v1.0）時自動觸發
+  workflow_dispatch:  # 也可以在 GitHub 網頁手動觸發
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build with PyInstaller
+        run: pyinstaller --clean 封包\健保用藥轉換工具.spec
+
+      - name: Create default folders
+        run: |
+          New-Item -ItemType Directory -Force -Path "健保藥檔載入"
+          New-Item -ItemType Directory -Force -Path "匯出結果"
+
+      - name: Install Inno Setup
+        run: choco install innosetup --yes
+
+      - name: Compile installer
+        run: iscc 封包\installer.iss
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 健保用藥品項轉換工具_安裝程式
+          path: 封包\installer_output\*.exe
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: 封包\installer_output\*.exe
+          name: 健保用藥品項轉換工具 ${{ github.ref_name }}

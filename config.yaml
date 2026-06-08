@@ -1,0 +1,26 @@
+# 健保用藥品項轉換工具設定檔
+
+ui:
+  font_size: 18        # 介面基礎字體大小（建議範圍 9–14，預設 10）
+
+paths:
+  input_dir:  "健保藥檔載入"   # TXT 來源資料夾
+  output_dir: "匯出結果"          # Excel 輸出資料夾
+  merged_dir: "merged"          # 合併後 CSV 暫存資料夾
+  data_dir:   "data"            # 歷史 TXT 備份資料夾
+
+recommendation_rules:
+  new_item_days: 62             # 幾天內生效視為本月新增
+
+output:
+  date_format:            "YYYY/MM/DD"
+  max_col_width:          50
+  suggest_col_width:      15
+  freeze_header:          true
+  alternating_row_color:  "DDEEFF"
+
+google_sheets:
+  enabled:        false
+  spreadsheet_id: ""            # 填入目標試算表 ID
+  worksheet_name: "健保用藥"
+  credentials_path: "credentials/google_service_account.json"
